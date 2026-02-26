@@ -1,12 +1,12 @@
-# Object-Oriented Programming 2026 (3168) Lab Environment Setup Guide
+# Object-Oriented Programming 2026 (3168) Lab Environment Setup Guide (macOS)
 
-> [한국어 버전](setup_guide.md) | [macOS version](setup_guide_macos_en.md)
+> [한국어 버전](setup_guide_macos.md) | [Windows version](setup_guide_en.md)
 
 This repository contains lab materials for the **Object-Oriented Programming 2026 (3168)** course.
 
 The original textbook code was written for an earlier Python 3.x version, which causes **version compatibility issues** with certain packages and syntax in current environments. To address this, the lab environment and example code have been restructured based on Python 3.9.
 
-> Based on Windows 11 + VSCode 1.107
+> Based on macOS + VSCode
 
 ---
 
@@ -14,9 +14,11 @@ The original textbook code was written for an earlier Python 3.x version, which 
 
 Miniconda includes Python, so there is no need to install Python separately.
 
-1. Download the **Miniconda Windows 64-bit** installer from [anaconda.com/download](https://www.anaconda.com/download).
+1. Download the **Miniconda macOS** installer from [anaconda.com/download](https://www.anaconda.com/download).
+   - Apple Silicon (M1/M2/M3/M4): **macOS Apple M1 64-bit pkg**
+   - Intel Mac: **macOS Intel x86 64-bit pkg**
 2. Run the installer (keep default options).
-3. Open **Anaconda Prompt** (search in Start menu) and create a virtual environment:
+3. Open **Terminal** (Terminal.app or iTerm2) and create a virtual environment:
 
 ```bash
 conda create -n OOP python=3.9 -y
@@ -29,6 +31,12 @@ conda activate OOP
 ```
 
 If `(OOP)` appears before your prompt, the activation was successful.
+
+> If `conda` is not recognized, restart the terminal or run:
+> ```bash
+> source ~/miniconda3/etc/profile.d/conda.sh
+> ```
+> If you installed Anaconda, the path may be `~/anaconda3/etc/profile.d/conda.sh`.
 
 ---
 
@@ -45,19 +53,22 @@ If `(OOP)` appears before your prompt, the activation was successful.
 
 ## Step 3: Select the conda Interpreter in VSCode
 
-1. Press `Ctrl + Shift + P` in VSCode to open the Command Palette.
+1. Press `Cmd + Shift + P` in VSCode to open the Command Palette.
 2. Type **"Python: Select Interpreter"** and select it.
 3. Choose `Python 3.9.x ('OOP': conda)` from the list.
 4. Verify that the selected interpreter is displayed in the bottom status bar.
 
 > If it does not appear in the list, select "Enter interpreter path" and enter the conda environment path manually:
-> `C:\Users\<username>\miniconda3\envs\OOP\python.exe`
+> ```
+> ~/miniconda3/envs/OOP/bin/python
+> ```
+> If you installed Anaconda: `~/anaconda3/envs/OOP/bin/python`
 
 ---
 
 ## Step 4: Clone the Lab Repository and Install Dependencies
 
-1. Open a terminal in VSCode (`Ctrl + ~`).
+1. Open a terminal in VSCode (`` Ctrl + ` `` or menu **Terminal > New Terminal**).
 2. Navigate to your working directory and clone this lab repository:
 
 ```bash
@@ -121,10 +132,11 @@ OOP_2026_Practice/
 
 | Symptom | Solution |
 |---------|----------|
-| `python` not recognized | Run `conda activate OOP` in Anaconda Prompt first |
-| `conda` not recognized | Use Anaconda Prompt or add conda to system PATH |
+| `conda` not recognized | Restart terminal or run `source ~/miniconda3/etc/profile.d/conda.sh` |
+| `python` points to system Python | Run `conda activate OOP` then verify with `which python` |
 | Interpreter not visible in VSCode | Restart VSCode and try again |
 | `import pytest` fails | Run `conda activate OOP` then `conda install pytest -y` |
+| Permission denied error | Use `pip install --user` or verify conda environment is activated |
 
 ---
 

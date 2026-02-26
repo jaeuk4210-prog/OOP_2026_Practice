@@ -1,12 +1,12 @@
-# Object-Oriented Programming 2026 (3168) 실습 환경 설치 가이드
+# Object-Oriented Programming 2026 (3168) 실습 환경 설치 가이드 (macOS)
 
-> [English version](setup_guide_en.md) | [macOS 버전](setup_guide_macos.md)
+> [English version](setup_guide_macos_en.md) | [Windows 버전](setup_guide.md)
 
 본 저장소는 **Object-Oriented Programming 2026 (3168)** 수업의 실습 자료입니다.
 
 교재의 원본 코드는 Python 3.x 초기 버전 기준으로 작성되어 있어, 현재 환경에서 일부 패키지 및 문법의 **버전 호환 문제**가 발생합니다. 이를 해결하기 위해 실습 환경과 예제 코드를 Python 3.9 기준으로 재구성하였습니다.
 
-> Windows 11 + VSCode 1.107 기준
+> macOS + VSCode 기준
 
 ---
 
@@ -14,9 +14,11 @@
 
 Miniconda를 설치하면 Python이 함께 포함되므로, Python을 별도로 설치할 필요가 없습니다.
 
-1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **Miniconda Windows 64-bit** 설치 파일을 다운로드합니다.
+1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **Miniconda macOS** 설치 파일을 다운로드합니다.
+   - Apple Silicon (M1/M2/M3/M4): **macOS Apple M1 64-bit pkg**
+   - Intel Mac: **macOS Intel x86 64-bit pkg**
 2. 설치를 진행합니다 (기본 옵션 유지).
-3. **Anaconda Prompt** (시작 메뉴에서 검색)를 열고 가상환경을 생성합니다:
+3. **터미널**(Terminal.app 또는 iTerm2)을 열고 가상환경을 생성합니다:
 
 ```bash
 conda create -n OOP python=3.9 -y
@@ -29,6 +31,12 @@ conda activate OOP
 ```
 
 프롬프트 앞에 `(OOP)`가 표시되면 성공입니다.
+
+> `conda` 명령이 인식되지 않는 경우, 터미널을 재시작하거나 아래 명령을 실행하세요:
+> ```bash
+> source ~/miniconda3/etc/profile.d/conda.sh
+> ```
+> Anaconda를 설치한 경우 경로가 `~/anaconda3/etc/profile.d/conda.sh`일 수 있습니다.
 
 ---
 
@@ -45,19 +53,22 @@ conda activate OOP
 
 ## Step 3: VSCode에서 conda 인터프리터 선택
 
-1. VSCode에서 `Ctrl + Shift + P`를 눌러 명령 팔레트를 엽니다.
+1. VSCode에서 `Cmd + Shift + P`를 눌러 명령 팔레트를 엽니다.
 2. **"Python: Select Interpreter"** 를 입력하고 선택합니다.
 3. 목록에서 `Python 3.9.x ('OOP': conda)` 항목을 선택합니다.
 4. 하단 상태 표시줄에 선택한 인터프리터가 표시되는지 확인합니다.
 
 > 목록에 보이지 않으면 "Enter interpreter path"를 선택하고 conda 환경 경로를 직접 입력합니다:
-> `C:\Users\<사용자명>\miniconda3\envs\OOP\python.exe`
+> ```
+> ~/miniconda3/envs/OOP/bin/python
+> ```
+> Anaconda를 설치한 경우: `~/anaconda3/envs/OOP/bin/python`
 
 ---
 
 ## Step 4: 실습 저장소 clone 및 의존성 설치
 
-1. VSCode에서 터미널을 엽니다 (`Ctrl + ~`).
+1. VSCode에서 터미널을 엽니다 (`` Ctrl + ` `` 또는 메뉴 **Terminal > New Terminal**).
 2. 작업 디렉토리로 이동한 후 본 실습 저장소를 clone합니다:
 
 ```bash
@@ -121,10 +132,11 @@ OOP_2026_Practice/
 
 | 증상 | 해결 방법 |
 |------|-----------|
-| `python`이 인식되지 않음 | Anaconda Prompt에서 `conda activate OOP` 후 실행 |
-| `conda`가 인식되지 않음 | Anaconda Prompt 사용 또는 시스템 PATH에 conda 경로 추가 |
+| `conda` 명령이 인식되지 않음 | 터미널 재시작 또는 `source ~/miniconda3/etc/profile.d/conda.sh` 실행 |
+| `python`이 시스템 Python을 가리킴 | `conda activate OOP` 후 `which python`으로 경로 확인 |
 | VSCode에서 인터프리터가 안 보임 | VSCode 재시작 후 다시 시도 |
 | `import pytest` 실패 | `conda activate OOP` 후 `conda install pytest -y` |
+| Permission denied 에러 | `pip install --user` 사용 또는 conda 환경 활성화 확인 |
 
 ---
 
