@@ -93,10 +93,10 @@ python -m ipykernel install --user --name OOP --display-name "Python 3 (OOP)"
 
 ## Step 5: Clone Repositories and Verify Environment
 
-Clone the textbook repository in the VSCode terminal:
+Clone the lab repository in the VSCode terminal:
 
 ```bash
-git clone https://github.com/PacktPublishing/Python-Object-Oriented-Programming---4th-edition.git
+git clone https://github.com/ElionLAB/OOP_2026_Practice.git
 ```
 
 Run the environment verification test:
