@@ -6,33 +6,11 @@ This repository contains lab materials for the **Object-Oriented Programming 202
 
 The original textbook code was written for an earlier Python 3.x version, which causes **version compatibility issues** with certain packages and syntax in current environments. To address this, the lab environment and example code have been restructured based on Python 3.9.
 
-> Based on Windows 11 + VSCode 1.107
+> Based on Windows 11 + VSCode
 
 ---
 
-## Step 1: Install Miniconda and Create a Virtual Environment
-
-Miniconda includes Python, so there is no need to install Python separately.
-
-1. Download the **Miniconda Windows 64-bit** installer from [anaconda.com/download](https://www.anaconda.com/download).
-2. Run the installer (keep default options).
-3. Open **Anaconda Prompt** (search in Start menu) and create a virtual environment:
-
-```bash
-conda create -n OOP python=3.9 -y
-```
-
-4. Activate the virtual environment:
-
-```bash
-conda activate OOP
-```
-
-If `(OOP)` appears before your prompt, the activation was successful.
-
----
-
-## Step 2: Install VSCode and Extensions
+## Step 1: Install VSCode and Extensions
 
 1. Download and install **VSCode** from [code.visualstudio.com](https://code.visualstudio.com/).
 2. Launch VSCode and click the **Extensions** icon (four squares) in the left sidebar.
@@ -43,31 +21,40 @@ If `(OOP)` appears before your prompt, the activation was successful.
 
 ---
 
-## Step 3: Select the conda Interpreter in VSCode
+## Step 2: Install Miniconda
 
-1. Press `Ctrl + Shift + P` in VSCode to open the Command Palette.
-2. Type **"Python: Select Interpreter"** and select it.
-3. Choose `Python 3.9.x ('OOP': conda)` from the list.
-4. Verify that the selected interpreter is displayed in the bottom status bar.
+1. Download the **Miniconda Windows 64-bit** installer from [anaconda.com/download](https://www.anaconda.com/download).
+2. Run the installer (keep default options).
+3. After installation, **restart VSCode**.
+4. Open a terminal in VSCode (`Ctrl + ~`).
 
-> If it does not appear in the list, select "Enter interpreter path" and enter the conda environment path manually:
-> `C:\Users\<username>\miniconda3\envs\OOP\python.exe`
+> If `conda` is not recognized in the terminal:
+> - Close VSCode completely and reopen it.
+> - Or switch the terminal type to **Command Prompt** (dropdown next to the `+` button at the top-right of the terminal > Command Prompt).
 
 ---
 
-## Step 4: Clone the Lab Repository and Install Dependencies
+## Step 3: Create Virtual Environment and Install Dependencies
 
-1. Open a terminal in VSCode (`Ctrl + ~`).
-2. Navigate to your working directory and clone this lab repository:
+Run the following commands in order in the VSCode terminal.
+
+1. Create a virtual environment:
 
 ```bash
-git clone https://github.com/PacktPublishing/Python-Object-Oriented-Programming---4th-edition.git
+conda create -n OOP python=3.9 -y
 ```
 
-3. With the conda environment activated, install the required packages:
+2. Activate the virtual environment:
 
 ```bash
 conda activate OOP
+```
+
+If `(OOP)` appears before your prompt, the activation was successful.
+
+3. Install required packages:
+
+```bash
 conda install beautifulsoup4 pytest pillow -y
 pip install tox
 ```
@@ -79,16 +66,35 @@ conda install ipykernel -y
 python -m ipykernel install --user --name OOP --display-name "Python 3 (OOP)"
 ```
 
-> When you open a `.ipynb` file in VSCode, select **Python 3 (OOP)** from the kernel picker in the top-right corner.
-> The **Jupyter** (Microsoft) VSCode extension must be installed.
+---
+
+## Step 4: Select the conda Interpreter in VSCode
+
+1. Press `Ctrl + Shift + P` in VSCode to open the Command Palette.
+2. Type **"Python: Select Interpreter"** and select it.
+3. Choose `Python 3.9.x ('OOP': conda)` from the list.
+4. Verify that the selected interpreter is displayed in the bottom status bar.
+
+> If it does not appear in the list, select "Enter interpreter path" and enter the conda environment path manually:
+> `C:\Users\<username>\miniconda3\envs\OOP\python.exe`
+
+> When you open a `.ipynb` file, select **Python 3 (OOP)** from the kernel picker in the top-right corner.
 
 ---
 
-## Step 5: Verify the Environment
+## Step 5: Clone Repositories and Verify Environment
 
-Run the test script to confirm that the environment is correctly configured:
+Clone the textbook repository in the VSCode terminal:
 
 ```bash
+git clone https://github.com/PacktPublishing/Python-Object-Oriented-Programming---4th-edition.git
+```
+
+Run the environment verification test:
+
+```bash
+conda activate OOP
+
 # Run directly
 python tests/test_setup.py
 
@@ -121,8 +127,8 @@ OOP_2026_Practice/
 
 | Symptom | Solution |
 |---------|----------|
-| `python` not recognized | Run `conda activate OOP` in Anaconda Prompt first |
-| `conda` not recognized | Use Anaconda Prompt or add conda to system PATH |
+| `conda` not recognized in VSCode terminal | Restart VSCode or switch terminal type to Command Prompt |
+| `python` not recognized | Run `conda activate OOP` first |
 | Interpreter not visible in VSCode | Restart VSCode and try again |
 | `import pytest` fails | Run `conda activate OOP` then `conda install pytest -y` |
 
