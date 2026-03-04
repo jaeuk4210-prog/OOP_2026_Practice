@@ -23,16 +23,53 @@
 
 ---
 
-## Step 2: Miniconda 설치
+## Step 2: Miniconda 또는 Anaconda 설치
 
-1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **Miniconda Windows 64-bit** 설치 파일을 다운로드합니다.
-2. 설치를 진행합니다 (기본 옵션 유지).
+**Miniconda**(경량, 권장) 또는 **Anaconda**(풀 배포판) 중 하나를 선택해 설치할 수 있습니다. 이 수업에서는 두 가지 모두 동일하게 사용 가능합니다.
+
+- **Miniconda**: 최소 설치 — conda와 Python만 포함. 대부분의 사용자에게 적합합니다.
+- **Anaconda**: 풀 배포판 — conda, Python, 250개 이상의 패키지 포함. 설치 용량이 큽니다(약 3 GB).
+
+1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **Windows 64-bit** 설치 파일을 다운로드합니다.
+   - Miniconda: 페이지 하단의 **Miniconda Installers** 섹션에서 **Windows 64-bit** 선택.
+   - Anaconda: 페이지 상단의 Windows 설치 파일 선택.
+2. 설치를 진행합니다. 설치 중 **"Add Miniconda3/Anaconda3 to my PATH environment variable"** 옵션을 체크합니다.
+   > 이 옵션은 기본적으로 체크 해제되어 있고 경고 문구가 표시되지만, 체크하면 어느 터미널에서도 `conda`를 바로 사용할 수 있습니다.
 3. 설치가 완료되면 **VSCode를 재시작**합니다.
 4. VSCode에서 터미널을 엽니다 (`Ctrl + ~`).
 
-> 터미널에서 `conda`가 인식되지 않는 경우:
-> - VSCode를 완전히 닫았다가 다시 엽니다.
-> - 또는 터미널 유형을 **Command Prompt**로 변경합니다 (터미널 우측 상단 `+` 옆 드롭다운 > Command Prompt).
+### 시스템 환경 변수 수동 등록 (`conda`가 인식되지 않는 경우)
+
+설치 시 PATH 옵션을 체크하지 않았다면 아래 방법으로 직접 등록합니다:
+
+1. `Win + S`를 눌러 **"시스템 환경 변수 편집"** 을 검색하여 엽니다.
+2. 하단의 **"환경 변수..."** 버튼을 클릭합니다.
+3. **"사용자 변수"** 에서 **Path**를 선택하고 **편집**을 클릭합니다.
+4. **새로 만들기**를 클릭하여 아래 경로를 추가합니다 (`<사용자명>`은 본인의 Windows 사용자 이름으로 변경):
+
+   **Miniconda의 경우:**
+   ```
+   C:\Users\<사용자명>\miniconda3
+   C:\Users\<사용자명>\miniconda3\Scripts
+   C:\Users\<사용자명>\miniconda3\condabin
+   ```
+
+   **Anaconda의 경우:**
+   ```
+   C:\Users\<사용자명>\anaconda3
+   C:\Users\<사용자명>\anaconda3\Scripts
+   C:\Users\<사용자명>\anaconda3\condabin
+   ```
+
+5. **확인**을 눌러 모든 창을 닫은 후 **VSCode를 재시작**합니다.
+6. 새 터미널을 열고 아래 명령으로 확인합니다:
+   ```bash
+   conda --version
+   ```
+   버전 번호(예: `conda 24.x.x`)가 표시되면 등록이 완료된 것입니다.
+
+> 위 방법을 모두 시도한 후에도 `conda`가 인식되지 않는 경우:
+> - 터미널 유형을 **Command Prompt**로 변경합니다 (터미널 우측 상단 `+` 옆 드롭다운 > Command Prompt).
 
 ---
 
@@ -127,12 +164,24 @@ OOP_2026_Practice/
 
 ## 문제 해결
 
+### 환경 변수 / conda 인식 문제
+
 | 증상 | 해결 방법 |
 |------|-----------|
-| VSCode 터미널에서 `conda`가 인식되지 않음 | VSCode 재시작 또는 터미널 유형을 Command Prompt로 변경 |
+| VSCode 터미널(PowerShell)에서 `conda`가 인식되지 않음 | 터미널 유형을 **Command Prompt**로 변경 (터미널 우측 상단 `+` 옆 드롭다운 > Command Prompt) |
+| Command Prompt에서도 `conda`가 인식되지 않음 | Step 2의 환경 변수 수동 등록 절차에 따라 PATH에 conda 경로 추가 후 VSCode 재시작 |
+| PowerShell에서 `conda activate` 실행 시 오류 발생 | PowerShell 실행 정책 문제. **관리자 권한**으로 PowerShell을 열고 아래 명령 실행:<br>`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`<br>이후 `conda init powershell` 실행 후 VSCode 재시작 |
+| PowerShell에서 `conda : 이 시스템에서 스크립트를 실행할 수 없습니다` 오류 | 위 PowerShell 실행 정책 해결 방법과 동일 |
+| 환경 변수 등록 후에도 `conda`가 인식되지 않음 | 로그아웃 후 재로그인 하거나 PC를 재시작. 또는 터미널 유형을 Command Prompt로 변경 |
+
+### Python / 패키지 문제
+
+| 증상 | 해결 방법 |
+|------|-----------|
 | `python`이 인식되지 않음 | `conda activate OOP` 후 실행 |
-| VSCode에서 인터프리터가 안 보임 | VSCode 재시작 후 다시 시도 |
+| VSCode에서 인터프리터가 안 보임 | VSCode 재시작 후 다시 시도. 그래도 안 되면 "Enter interpreter path"로 직접 경로 입력 |
 | `import pytest` 실패 | `conda activate OOP` 후 `conda install pytest -y` |
+| `conda activate OOP` 후에도 시스템 Python이 실행됨 | `where python` 명령으로 경로 확인. conda 환경 경로(`miniconda3\envs\OOP`)가 최상단에 있어야 함 |
 
 ---
 

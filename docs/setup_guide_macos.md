@@ -21,22 +21,59 @@
 
 ---
 
-## Step 2: Miniconda 설치
+## Step 2: Miniconda 또는 Anaconda 설치
 
-1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **Miniconda macOS** 설치 파일을 다운로드합니다.
+**Miniconda**(경량, 권장) 또는 **Anaconda**(풀 배포판) 중 하나를 선택해 설치할 수 있습니다. 이 수업에서는 두 가지 모두 동일하게 사용 가능합니다.
+
+- **Miniconda**: 최소 설치 — conda와 Python만 포함. 대부분의 사용자에게 적합합니다.
+- **Anaconda**: 풀 배포판 — conda, Python, 250개 이상의 패키지 포함. 설치 용량이 큽니다(약 3 GB).
+
+1. [anaconda.com/download](https://www.anaconda.com/download) 에서 **macOS** 설치 파일을 다운로드합니다.
    - Apple Silicon (M1/M2/M3/M4): **macOS Apple M1 64-bit pkg**
    - Intel Mac: **macOS Intel x86 64-bit pkg**
 2. 설치를 진행합니다 (기본 옵션 유지).
 3. 설치가 완료되면 **VSCode를 재시작**합니다.
 4. VSCode에서 터미널을 엽니다 (`` Ctrl + ` `` 또는 메뉴 **Terminal > New Terminal**).
 
-> 터미널에서 `conda`가 인식되지 않는 경우:
-> - VSCode를 완전히 닫았다가 다시 엽니다.
-> - 또는 터미널에서 아래 명령을 실행합니다:
+### macOS 시스템 환경 변수(PATH) 등록
+
+설치 프로그램이 자동으로 `conda init`을 실행하여 쉘 프로파일에 conda를 등록합니다. 수동으로 확인하거나 수정하려면 아래 절차를 따릅니다:
+
+1. 터미널을 열고 아래 명령을 실행합니다:
+   ```bash
+   conda init zsh
+   ```
+   **bash**를 사용하는 경우(구형 macOS):
+   ```bash
+   conda init bash
+   ```
+
+2. 쉘 설정 파일을 다시 불러옵니다:
+   ```bash
+   source ~/.zshrc
+   # bash를 사용하는 경우:
+   source ~/.bash_profile
+   ```
+
+3. conda가 올바르게 등록되었는지 확인합니다:
+   ```bash
+   conda --version
+   which conda
+   echo $PATH
+   ```
+   - `conda --version`: 버전 번호(예: `conda 24.x.x`)가 출력되면 정상입니다.
+   - `which conda`: conda 경로(예: `/Users/<사용자명>/miniconda3/bin/conda`)가 출력되어야 합니다.
+   - `echo $PATH`: 출력 결과에 `miniconda3/bin` 또는 `anaconda3/bin` 경로가 포함되어 있어야 합니다.
+
+> `conda init`으로 해결되지 않는 경우, `~/.zshrc`(또는 `~/.bash_profile`)에 아래 줄을 직접 추가할 수 있습니다:
 > ```bash
-> source ~/miniconda3/etc/profile.d/conda.sh
+> export PATH="$HOME/miniconda3/bin:$PATH"
 > ```
-> Anaconda를 설치한 경우 경로가 `~/anaconda3/etc/profile.d/conda.sh`일 수 있습니다.
+> Anaconda의 경우: `export PATH="$HOME/anaconda3/bin:$PATH"`
+>
+> 추가 후 적용: `source ~/.zshrc`
+
+> 위 방법을 모두 시도한 후에도 `conda`가 인식되지 않는 경우, VSCode를 완전히 닫았다가 다시 엽니다.
 
 ---
 
@@ -134,13 +171,24 @@ OOP_2026_Practice/
 
 ## 문제 해결
 
+### 환경 변수 / conda 인식 문제
+
 | 증상 | 해결 방법 |
 |------|-----------|
-| VSCode 터미널에서 `conda`가 인식되지 않음 | VSCode 재시작 또는 `source ~/miniconda3/etc/profile.d/conda.sh` 실행 |
-| `python`이 시스템 Python을 가리킴 | `conda activate OOP` 후 `which python`으로 경로 확인 |
-| VSCode에서 인터프리터가 안 보임 | VSCode 재시작 후 다시 시도 |
+| VSCode 터미널에서 `conda`가 인식되지 않음 | `conda init zsh` (또는 `conda init bash`) 실행 후 `source ~/.zshrc` 적용, VSCode 재시작 |
+| `conda init` 실행 후에도 인식 안 됨 | `~/.zshrc`에 `export PATH="$HOME/miniconda3/bin:$PATH"` 직접 추가 후 `source ~/.zshrc` |
+| `conda: command not found` | `echo $PATH`로 conda 경로 포함 여부 확인. 없으면 Step 2의 환경 변수 등록 절차 수행 |
+| `which conda`가 `/usr/bin/conda` 또는 빈 값 출력 | conda가 PATH에 등록되지 않음. `conda init zsh` 실행 후 VSCode 재시작 |
+| 터미널 재시작마다 conda가 초기화됨 (`base` 프롬프트가 사라짐) | `~/.zshrc` 파일에 conda 초기화 블록이 있는지 확인. 없으면 `conda init zsh` 재실행 |
+
+### Python / 패키지 문제
+
+| 증상 | 해결 방법 |
+|------|-----------|
+| `python`이 시스템 Python을 가리킴 | `conda activate OOP` 후 `which python`으로 경로 확인 (`miniconda3/envs/OOP/bin/python`이어야 함) |
+| VSCode에서 인터프리터가 안 보임 | VSCode 재시작 후 다시 시도. 그래도 안 되면 "Enter interpreter path"로 `~/miniconda3/envs/OOP/bin/python` 직접 입력 |
 | `import pytest` 실패 | `conda activate OOP` 후 `conda install pytest -y` |
-| Permission denied 에러 | `pip install --user` 사용 또는 conda 환경 활성화 확인 |
+| Permission denied 에러 | `pip install --user` 사용 또는 conda 환경 활성화(`conda activate OOP`) 확인 |
 
 ---
 

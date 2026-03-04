@@ -21,22 +21,58 @@ The original textbook code was written for an earlier Python 3.x version, which 
 
 ---
 
-## Step 2: Install Miniconda
+## Step 2: Install Miniconda or Anaconda
 
-1. Download the **Miniconda macOS** installer from [anaconda.com/download](https://www.anaconda.com/download).
+You can use either **Miniconda** (lightweight, recommended) or **Anaconda** (full distribution). Both work the same way for this course.
+
+- **Miniconda**: Minimal installer — includes only conda and Python. Suitable for most users.
+- **Anaconda**: Full distribution — includes conda, Python, and 250+ pre-installed packages. Takes more disk space (~3 GB).
+
+1. Download the **macOS** installer from [anaconda.com/download](https://www.anaconda.com/download).
    - Apple Silicon (M1/M2/M3/M4): **macOS Apple M1 64-bit pkg**
    - Intel Mac: **macOS Intel x86 64-bit pkg**
 2. Run the installer (keep default options).
 3. After installation, **restart VSCode**.
 4. Open a terminal in VSCode (`` Ctrl + ` `` or menu **Terminal > New Terminal**).
 
-> If `conda` is not recognized in the terminal:
-> - Close VSCode completely and reopen it.
-> - Or run the following in the terminal:
+### Registering Environment Variables (PATH) on macOS
+
+The installer automatically runs `conda init`, which adds conda to your shell profile. To verify or fix this manually:
+
+1. Open a terminal and run:
+   ```bash
+   conda init zsh
+   ```
+   If you use **bash** instead of zsh (older macOS):
+   ```bash
+   conda init bash
+   ```
+
+2. Reload the shell configuration:
+   ```bash
+   source ~/.zshrc
+   # or for bash:
+   source ~/.bash_profile
+   ```
+
+3. Verify that conda is correctly registered:
+   ```bash
+   conda --version
+   which conda
+   echo $PATH
+   ```
+   - `conda --version` should display a version number (e.g., `conda 24.x.x`).
+   - `which conda` should display the conda path (e.g., `/Users/<username>/miniconda3/bin/conda`).
+
+> If `conda init` does not work, you can manually add the following line to `~/.zshrc` (or `~/.bash_profile`):
 > ```bash
-> source ~/miniconda3/etc/profile.d/conda.sh
+> export PATH="$HOME/miniconda3/bin:$PATH"
 > ```
-> If you installed Anaconda, the path may be `~/anaconda3/etc/profile.d/conda.sh`.
+> For Anaconda: `export PATH="$HOME/anaconda3/bin:$PATH"`
+>
+> Then reload: `source ~/.zshrc`
+
+> If `conda` is still not recognized after reloading, close VSCode completely and reopen it.
 
 ---
 
@@ -134,13 +170,24 @@ OOP_2026_Practice/
 
 ## Troubleshooting
 
+### Environment Variables / conda Not Recognized
+
 | Symptom | Solution |
 |---------|----------|
-| `conda` not recognized in VSCode terminal | Restart VSCode or run `source ~/miniconda3/etc/profile.d/conda.sh` |
-| `python` points to system Python | Run `conda activate OOP` then verify with `which python` |
-| Interpreter not visible in VSCode | Restart VSCode and try again |
+| `conda` not recognized in VSCode terminal | Run `conda init zsh` (or `conda init bash`), then `source ~/.zshrc`, and restart VSCode |
+| Still not recognized after `conda init` | Manually add `export PATH="$HOME/miniconda3/bin:$PATH"` to `~/.zshrc`, then run `source ~/.zshrc` |
+| `conda: command not found` | Run `echo $PATH` to check if conda path is included. If not, follow the PATH registration steps in Step 2 |
+| `which conda` returns `/usr/bin/conda` or nothing | conda is not registered in PATH. Run `conda init zsh` and restart VSCode |
+| conda prompt (`base`) disappears after restarting terminal | Check if the conda init block exists in `~/.zshrc`. If missing, run `conda init zsh` again |
+
+### Python / Package Issues
+
+| Symptom | Solution |
+|---------|----------|
+| `python` points to system Python | Run `conda activate OOP` then verify with `which python` (should show `miniconda3/envs/OOP/bin/python`) |
+| Interpreter not visible in VSCode | Restart VSCode and try again. If still missing, use "Enter interpreter path" and enter `~/miniconda3/envs/OOP/bin/python` directly |
 | `import pytest` fails | Run `conda activate OOP` then `conda install pytest -y` |
-| Permission denied error | Use `pip install --user` or verify conda environment is activated |
+| Permission denied error | Use `pip install --user` or verify the conda environment is activated (`conda activate OOP`) |
 
 ---
 

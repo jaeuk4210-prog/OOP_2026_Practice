@@ -23,16 +23,53 @@ The original textbook code was written for an earlier Python 3.x version, which 
 
 ---
 
-## Step 2: Install Miniconda
+## Step 2: Install Miniconda or Anaconda
 
-1. Download the **Miniconda Windows 64-bit** installer from [anaconda.com/download](https://www.anaconda.com/download).
-2. Run the installer (keep default options).
+You can use either **Miniconda** (lightweight, recommended) or **Anaconda** (full distribution). Both work the same way for this course.
+
+- **Miniconda**: Minimal installer — includes only conda and Python. Suitable for most users.
+- **Anaconda**: Full distribution — includes conda, Python, and 250+ pre-installed packages. Takes more disk space (~3 GB).
+
+1. Download the **Windows 64-bit** installer from [anaconda.com/download](https://www.anaconda.com/download).
+   - Miniconda: scroll down to the **Miniconda Installers** section and select **Windows 64-bit**.
+   - Anaconda: select the Windows installer at the top of the page.
+2. Run the installer. When prompted, check **"Add Miniconda3/Anaconda3 to my PATH environment variable"**.
+   > This option is unchecked by default and shows a warning, but checking it allows `conda` to be recognized in any terminal.
 3. After installation, **restart VSCode**.
 4. Open a terminal in VSCode (`Ctrl + ~`).
 
-> If `conda` is not recognized in the terminal:
-> - Close VSCode completely and reopen it.
-> - Or switch the terminal type to **Command Prompt** (dropdown next to the `+` button at the top-right of the terminal > Command Prompt).
+### Manually Adding Environment Variables (if `conda` is not recognized)
+
+If you did not check the PATH option during installation, add it manually:
+
+1. Press `Win + S`, search for **"Edit the system environment variables"**, and open it.
+2. Click **"Environment Variables..."** at the bottom.
+3. Under **"User variables"**, select **Path** and click **Edit**.
+4. Click **New** and add the following paths (replace `<username>` with your Windows username):
+
+   **For Miniconda:**
+   ```
+   C:\Users\<username>\miniconda3
+   C:\Users\<username>\miniconda3\Scripts
+   C:\Users\<username>\miniconda3\condabin
+   ```
+
+   **For Anaconda:**
+   ```
+   C:\Users\<username>\anaconda3
+   C:\Users\<username>\anaconda3\Scripts
+   C:\Users\<username>\anaconda3\condabin
+   ```
+
+5. Click **OK** to close all dialogs, then **restart VSCode**.
+6. Open a new terminal and verify:
+   ```bash
+   conda --version
+   ```
+   If a version number is displayed (e.g., `conda 24.x.x`), the setup is complete.
+
+> If `conda` is still not recognized after the above steps:
+> - Switch the terminal type to **Command Prompt** (dropdown next to the `+` button at the top-right of the terminal > Command Prompt).
 
 ---
 
@@ -127,12 +164,24 @@ OOP_2026_Practice/
 
 ## Troubleshooting
 
+### Environment Variables / conda Not Recognized
+
 | Symptom | Solution |
 |---------|----------|
-| `conda` not recognized in VSCode terminal | Restart VSCode or switch terminal type to Command Prompt |
+| `conda` not recognized in VSCode terminal (PowerShell) | Switch the terminal type to **Command Prompt** (dropdown next to the `+` button at the top-right of the terminal > Command Prompt) |
+| `conda` not recognized in Command Prompt either | Follow the manual PATH registration steps in Step 2 to add conda paths, then restart VSCode |
+| PowerShell error when running `conda activate` | PowerShell execution policy issue. Open PowerShell **as Administrator** and run:<br>`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`<br>Then run `conda init powershell` and restart VSCode |
+| PowerShell shows `cannot be loaded because running scripts is disabled` | Same as the execution policy fix above |
+| `conda` still not recognized after adding environment variables | Log out and back in, or restart the PC. Alternatively, switch the terminal type to Command Prompt |
+
+### Python / Package Issues
+
+| Symptom | Solution |
+|---------|----------|
 | `python` not recognized | Run `conda activate OOP` first |
-| Interpreter not visible in VSCode | Restart VSCode and try again |
+| Interpreter not visible in VSCode | Restart VSCode and try again. If still missing, use "Enter interpreter path" to specify the path manually |
 | `import pytest` fails | Run `conda activate OOP` then `conda install pytest -y` |
+| System Python runs even after `conda activate OOP` | Run `where python` to check the path. The conda env path (`miniconda3\envs\OOP`) should appear at the top |
 
 ---
 
