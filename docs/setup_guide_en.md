@@ -123,6 +123,12 @@ python -m ipykernel install --user --name OOP --display-name "Python 3 (OOP)"
 
 ## Step 5: Clone Repositories and Verify Environment
 
+Install git:
+
+```bash
+conda install git -y
+```
+
 Clone the lab repository in the VSCode terminal:
 
 ```bash

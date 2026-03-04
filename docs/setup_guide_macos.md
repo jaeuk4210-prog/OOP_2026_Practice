@@ -130,6 +130,12 @@ python -m ipykernel install --user --name OOP --display-name "Python 3 (OOP)"
 
 ## Step 5: 저장소 clone 및 환경 검증
 
+git을 설치합니다:
+
+```bash
+conda install git -y
+```
+
 VSCode 터미널에서 실습 저장소를 clone합니다:
 
 ```bash
